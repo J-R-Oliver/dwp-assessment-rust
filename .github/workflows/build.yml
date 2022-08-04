@@ -87,7 +87,7 @@ jobs:
         uses: actions-rs/cargo@v1
         with:
           command: test
-      - run: echo check test coverage -> https://github.com/actions-rs/tarpaulin / https://github.com/actions-rs/grcov
+      - run: echo "check test coverage -> https://github.com/actions-rs/tarpaulin / https://github.com/actions-rs/grcov"
       - name: Outdated Dependencies
         run: |
           cargo install --locked cargo-outdated

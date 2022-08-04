@@ -61,29 +61,45 @@ jobs:
         uses: actions/checkout@v3
       - name: Setup Rust
         uses: actions-rs/toolchain@v1
-      - run: echo cache cargo creates
-      - run: echo verify cargo crates
-      - name: fmt ?? Just want this to check fmt is correct
+        with:
+          toolchain: stable
+      - name: Cache Cargo Crates
+        uses: Swatinem/rust-cache@v2
+        with:
+          key: ${{ runner.os }}-build-go-${{ hashFiles('**/Cargo.lock') }}
+      - name: Verify Cargo.toml
+        run: cargo verify-project
+      - name: Check Formatting
         uses: actions-rs/cargo@v1
         with:
           command: fmt
           args: --all -- --check
-      - name: ??
+      - name: Cargo Check
         uses: actions-rs/cargo@v1
         with:
           command: check
-      - name: ??
-        uses: actions-rs/cargo@v1
+      - name: Clippy
+        uses: actions-rs/clippy-check@v1
         with:
-          command: clippy
-          args: -- -D warnings
-      - name: test ???
+          token: ${{ secrets.GITHUB_TOKEN }}
+          args: --all-features
+      - name: Unit Tests
         uses: actions-rs/cargo@v1
         with:
           command: test
-      - run: echo check test coverage
-      - run: echo check running latest deps
-      - run: echo audit deps
+      - run: echo check test coverage -> https://github.com/actions-rs/tarpaulin / https://github.com/actions-rs/grcov
+      - name: Outdated Dependencies
+        run: |
+          cargo install --locked cargo-outdated
+          cargo outdated --exit-code 1
+      - run: Cargo Audit
+        uses: actions-rs/audit-check@v1
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+      - name: Cargo Bloat
+        uses: orf/cargo-bloat-action@v1
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
 
 
   Docker:

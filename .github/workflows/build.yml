@@ -92,7 +92,7 @@ jobs:
         run: |
           cargo install --locked cargo-outdated
           cargo outdated --exit-code 1
-      - run: Cargo Audit
+      - name: Cargo Audit
         uses: actions-rs/audit-check@v1
         with:
           token: ${{ secrets.GITHUB_TOKEN }}

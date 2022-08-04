@@ -1,0 +1,12 @@
+[package]
+name = "dwp_assessment_rust"
+version = "0.1.0"
+authors = ["James Oliver"]
+edition = "2021"
+rust-version = "1.56"
+description = "An API which calls the API at https://bpdts-test-app.herokuapp.com/, and returns people who are listed as either living in London, or whose current coordinates are within 50 miles of London."
+readme = "README.md"
+repository = "https://github.com/J-R-Oliver/dwp-assessment-rust"
+license = "Unlicense"
+
+[dependencies]
